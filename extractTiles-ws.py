@@ -1,8 +1,8 @@
-# Copyright (C) James Dolezal - All Rights Reserved
-# Unauthorized copying of this file, via any medium is strictly prohibited
-# Proprietary and confidential
-# Written by James Dolezal <jamesmdolezal@gmail.com>, March 2019
-# Edited by NArmin Ghaffari <narminghaffari23@gmail.com>, Nov 2020
+# Development of script by Narmin Ghaffari, Jakob Kather and James Dolezal
+
+# Narmin Ghaffari <narminghaffari23@gmail.com>, Nov 2020
+# Jakob Nikolas Kather <jkather@ukaachen.de>, Nov 2020
+# James Dolezal <jamesmdolezal@gmail.com>, March 2019
 
 ###############################################################################
 
