@@ -1,5 +1,5 @@
 # preProcessing
-This Repository contains two main script for the preProcessing of the Whole Slide Images (WSIs) as an initial step for histopathological deep learning.
+This repository contains two main scripts for the preProcessing of the Whole Slide Images (WSIs) as an initial step for histopathological deep learning.
 
 1. extractTiles-ws : This script is used to tessellate the WSIs. The main required inputs for this function:
 
