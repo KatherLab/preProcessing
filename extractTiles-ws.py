@@ -8,11 +8,11 @@
 
 # Requires: Openslide (https://openslide.org/download/)
 
-from multiprocessing.dummy import Pool as ThreadPool
-from os.path import join, isfile, exists
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from multiprocessing.dummy import Pool as ThreadPool
+from os.path import join, isfile, exists
 
 import os
 import progressbar
@@ -118,8 +118,8 @@ class SlideReader:
             return None
 
         thumbs_path = join(export_folder, "thumbs")
-        if not os.path.exists(thumbs_path):
-            os.makedirs(thumbs_path)
+        #if not os.path.exists(thumbs_path):
+        #    os.makedirs(thumbs_path)
             
         # Load ROIs if available
         roi_path_csv = self.basename + ".csv"
@@ -221,7 +221,7 @@ class SlideReader:
                 else:
                     exportFlag = export
                     
-                if exportFlag:                 
+                if exportFlag:
                     imageio.imwrite(join(tiles_path, case_name +'_('+str(c[0])+','+str(c[1])+').jpg'), region)
                     if augment:
                         imageio.imwrite(join(tiles_path, case_name +'_('+str(c[0])+','+str(c[1])+')._aug1.jpg'), np.rot90(region))
@@ -321,10 +321,10 @@ class Convoluter:
         case_name = slide['name']
         category = slide['category']
         path = slide['path']
+
         filetype = slide['type']
         self.iterator = self.iterator + 1
         whole_slide = SlideReader(path, filetype, self.SAVE_FOLDER, pb=pb)
-
         if not whole_slide.has_anno and self.skipws:
             return
         
@@ -338,9 +338,11 @@ class Convoluter:
         if not os.path.exists(tiles_path):
             os.makedirs(tiles_path)
             
-        tiles_path = tiles_path + '/' + case_name
-            
-           
+  
+        tiles_path = tiles_path + '/' + case_name      
+
+        case_name = "/".join(case_name.strip("/").split('/')[1:]) #This removes the first sub-path in the case_name. There may be a better way to do this.
+        
         if not os.path.exists(tiles_path):
             os.makedirs(tiles_path)
                  
@@ -383,7 +385,8 @@ def get_args():
     return parser.parse_args()
 
 ###############################################################################
-    
+
+
 if __name__ == ('__main__'):
         
     args = get_args()
