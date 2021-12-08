@@ -205,7 +205,7 @@ class SlideReader:
                 except:
                     continue
                 
-                edge  = cv2.Canny(region) 
+                edge  = cv2.Canny(region, 40, 100) 
                 edge = edge / np.max(edge)
                 edge = (np.sum(np.sum(edge)) / (size_px * size_px)) * 100
                 
