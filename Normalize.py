@@ -31,7 +31,7 @@ def Normalize_Main(item):
             for tempItem in tempContent:
                 img = cv2.imread(os.path.join(inputPathRoot, tempItem))
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                edge  = cv2.Canny(img, 40, 40) 
+                edge  = cv2.Canny(img, 40, 100) 
                 edge = edge / np.max(edge)               
                 edge = (np.sum(np.sum(edge)) / (img.shape[0] *img.shape[1])) * 100
                 print(edge)
