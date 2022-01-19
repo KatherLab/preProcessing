@@ -1,0 +1,3 @@
+[submodule "preprocessing-ng"]
+	path = preprocessing-ng
+	url = https://github.com/KatherLab/preprocessing-ng
