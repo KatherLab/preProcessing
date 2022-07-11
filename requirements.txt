@@ -1,0 +1,12 @@
+imageio==2.19.3
+numpy==1.23.1
+opencv-python==4.6.0.66
+openslide-python==1.2.0
+pandas==1.4.3
+Pillow==9.2.0
+progressbar==2.5
+python-dateutil==2.8.2
+pytz==2022.1
+Shapely==1.8.2
+six==1.16.0
+slideio==1.0.3
