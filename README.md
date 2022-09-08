@@ -20,8 +20,20 @@ Input Variable name | Description
 
 Input Variable name | Description
 --- | --- 
--inputPath | Path to the BLOCKS folder, where the tiles are saved | 
--outputPath | Path to the output folder, to save the normalized tiles
---sampleImagePath | Path to one sample tile, which it's color distribution will used as a template for all the tiles.
+usage: Normalize.py [-h] -ip INPUTPATH -op OUTPUTPATH [-si SAMPLEIMAGEPATH] [-nt THREADS]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -si SAMPLEIMAGEPATH, --sampleImagePath SAMPLEIMAGEPATH
+                        Image used to determine the colour distribution, uses GitHub one
+                        by default
+  -nt THREADS, --threads THREADS
+                        Number of threads used for processing, 2 by default
+
+required named arguments:
+  -ip INPUTPATH, --inputPath INPUTPATH
+                        Input path of the to-be-normalised tiles
+  -op OUTPUTPATH, --outputPath OUTPUTPATH
+                        Output path to store normalised tiles
 
 In this script, we are using the Macenko normalization method from https://github.com/wanghao14/Stain_Normalization.git repository.
