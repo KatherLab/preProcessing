@@ -16,24 +16,15 @@ Input Variable name | Description
 --augment | Augment extracted tiles with flipping/rotating.
 --ov | The Size of overlappig for extracted tiles. It can be values between 0 and 1.
 
-3. Normalize : This script is used to normalize the extracted tiles using Macenko method. The main required inputs for this function:
+3. Normalize: This script is used to normalize the extracted tiles using Macenko method. The main required inputs for this function:
 
 Input Variable name | Description
 --- | --- 
-usage: Normalize.py [-h] -ip INPUTPATH -op OUTPUTPATH [-si SAMPLEIMAGEPATH] [-nt THREADS]
+-ip or --inputPath | Input path of the to-be-normalised tiles |
+-op or --outputPath | Output path to store normalised tiles
+-si or --sampleImagePath | Image used to determine the colour distribution, uses GitHub one by default |
+-nt or --threads | Number of threads used for processing, 2 by default |
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -si SAMPLEIMAGEPATH, --sampleImagePath SAMPLEIMAGEPATH
-                        Image used to determine the colour distribution, uses GitHub one
-                        by default
-  -nt THREADS, --threads THREADS
-                        Number of threads used for processing, 2 by default
-
-required named arguments:
-  -ip INPUTPATH, --inputPath INPUTPATH
-                        Input path of the to-be-normalised tiles
-  -op OUTPUTPATH, --outputPath OUTPUTPATH
-                        Output path to store normalised tiles
+usage: python Normalize.py -ip INPUTPATH -op OUTPUTPATH [-si SAMPLEIMAGEPATH] [-nt THREADS]
 
 In this script, we are using the Macenko normalization method from https://github.com/wanghao14/Stain_Normalization.git repository.
