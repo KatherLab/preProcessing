@@ -1,3 +1,4 @@
+Note: Requires Python 3.8+
 # preProcessing
 This repository contains two main scripts for the preProcessing of the Whole Slide Images (WSIs) as an initial step for histopathological deep learning.
 
