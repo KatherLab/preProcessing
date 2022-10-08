@@ -33,26 +33,31 @@ def Normalize_Main(inputPath, outputPath, item, normalizer):
 
     outputPathRoot = os.path.join(outputPath, item)
     inputPathRoot = os.path.join(inputPath, item)
-    inputPathRootContent = os.listdir(inputPathRoot)
-    if not len(inputPathRootContent) == 0:
-        if not os.path.exists(outputPathRoot):
-            os.mkdir(outputPathRoot)
-            temp = os.path.join(inputPath, item)
-            tempContent = os.listdir(temp)
-            tempContent = [i for i in tempContent if i.endswith('.jpg')]
-            for tempItem in tempContent:
-                img = cv2.imread(os.path.join(inputPathRoot, tempItem))
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                edge  = cv2.Canny(img, 40, 100)
-                edge = edge / np.max(edge) if np.max(edge) != 0 else 0
-                edge = (np.sum(np.sum(edge)) / (img.shape[0] *img.shape[1])) * 100 if np.max(edge) != 0 else 0
-                #print(edge)
-                if edge > 2:
-                    try:
-                        nor_img = normalizer.transform(img)
-                        cv2.imwrite(os.path.join(outputPathRoot, tempItem), cv2.cvtColor(nor_img, cv2.COLOR_RGB2BGR))
-                    except:
-                        print('Failed to normalize the tile {}.'.format(tempItem))
+    
+    #check if path actually leads to a directory
+    if(os.path.isdir(inputPathRoot)):
+        inputPathRootContent = os.listdir(inputPathRoot)
+        if not len(inputPathRootContent) == 0:
+            if not os.path.exists(outputPathRoot):
+                os.mkdir(outputPathRoot)
+                temp = os.path.join(inputPath, item)
+                tempContent = os.listdir(temp)
+                tempContent = [i for i in tempContent if i.endswith('.jpg')]
+                for tempItem in tempContent:
+                    img = cv2.imread(os.path.join(inputPathRoot, tempItem))
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                    edge  = cv2.Canny(img, 40, 100)
+                    edge = edge / np.max(edge) if np.max(edge) != 0 else 0
+                    edge = (np.sum(np.sum(edge)) / (img.shape[0] *img.shape[1])) * 100 if np.max(edge) != 0 else 0
+                    #print(edge)
+                    if edge > 2:
+                        try:
+                            nor_img = normalizer.transform(img)
+                            cv2.imwrite(os.path.join(outputPathRoot, tempItem), cv2.cvtColor(nor_img, cv2.COLOR_RGB2BGR))
+                        except:
+                            print('Failed to normalize the tile {}.'.format(tempItem))
+    else:
+        print(f"Rejected {inputPathRoot}: not a directory")
                     
 ##############################################################################
                         
