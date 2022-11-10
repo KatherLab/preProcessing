@@ -25,7 +25,8 @@ Input Variable name | Description
 -op or --outputPath | Output path to store normalised tiles
 -si or --sampleImagePath | Image used to determine the colour distribution, uses GitHub one by default |
 -nt or --threads | Number of threads used for processing, 2 by default |
+-pl or --patientList | Clini table containing PATIENT and FILENAME to normalise |
 
-usage: python Normalize.py -ip INPUTPATH -op OUTPUTPATH [-si SAMPLEIMAGEPATH] [-nt THREADS]
+usage: python Normalize.py -ip INPUTPATH -op OUTPUTPATH [-si SAMPLEIMAGEPATH] [-nt THREADS] [-pl CLINITABLE]
 
 In this script, we are using the Macenko normalization method from https://github.com/wanghao14/Stain_Normalization.git repository.

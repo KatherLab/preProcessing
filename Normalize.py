@@ -18,6 +18,8 @@ import numpy  as np
 from pathlib import Path
 from itertools import repeat
 import argparse
+import glob
+import pandas as pd
 #TODO: create process bar that works in multiprocessing env
 #from tqdm import tqdm
 
@@ -33,13 +35,18 @@ def Normalize_Main(inputPath, outputPath, item, normalizer):
 
     outputPathRoot = os.path.join(outputPath, item)
     inputPathRoot = os.path.join(inputPath, item)
-    
+
     #check if path actually leads to a directory
     if(os.path.isdir(inputPathRoot)):
         inputPathRootContent = os.listdir(inputPathRoot)
         if not len(inputPathRootContent) == 0:
             if not os.path.exists(outputPathRoot):
-                os.mkdir(outputPathRoot)
+                #creates the parent directory (patient) and child (file)
+                if '/' in item: #parent/child structure from clini table input
+                    os.makedirs(outputPathRoot, exist_ok=False)
+                else:
+                    os.mkdir(outputPathRoot)
+
                 temp = os.path.join(inputPath, item)
                 tempContent = os.listdir(temp)
                 tempContent = [i for i in tempContent if i.endswith('.jpg')]
@@ -68,9 +75,27 @@ def poolcontext(*args, **kwargs):
 
 ###############################################################################
     
-def Normalization(inputPath: Path, outputPath: Path, sampleImagePath: Path, num_threads: int) -> None:
+def Normalization(inputPath: Path, outputPath: Path, sampleImagePath: Path, num_threads: int, patient_list: Path) -> None:
     
-    inputPathContent = os.listdir(inputPath)
+    if patient_list == None:
+        inputPathContent = os.listdir(inputPath)
+    
+    else:
+        print("Using provided patient list to determine normalisation slides...")
+        all_tiled_slides = glob.glob(f"{inputPath}/*/*") #this will contain all your subfolders of the patients
+
+        #read the excel file which contains the names which we actually want
+        df = pd.read_excel(patient_list, dtype=str)
+        #extract the column we want from the table
+        df=(df[['PATIENT','FILENAME']].dropna().values).tolist()
+        patient_list=[f"{inputPath}/{patient}/{file}" for patient, file in df]
+
+        #find intersection between the folder lists and our clini patient list
+        #format into item object within normalisation function patient/filename
+        inputPathContent = [f"{full_dir.split('/')[-2]}/{full_dir.split('/')[-1]}" \
+            for full_dir in list(set(all_tiled_slides) & set(patient_list))]
+        print(f"... Found {len(inputPathContent)} slides to normalise")
+    
     normPathContent = os.listdir(outputPath)
     
     remainlList = []
@@ -92,7 +117,6 @@ def Normalization(inputPath: Path, outputPath: Path, sampleImagePath: Path, num_
     
     #quick fix uses starmap, which passes the arguments as iterative objects.
     #repeat is used for constants
-
     pool.starmap(Normalize_Main, zip((repeat(inputPath)), repeat(outputPath), inputPathContent, repeat(normalizer)))
     pool.close()
     pool.join()
@@ -103,6 +127,7 @@ if __name__ == '__main__':
     requiredNamed = parser.add_argument_group('required named arguments')
     requiredNamed.add_argument("-ip", "--inputPath", help="Input path of the to-be-normalised tiles", type=Path, required=True)
     requiredNamed.add_argument("-op", "--outputPath", help="Output path to store normalised tiles", type=Path, required=True)
+    parser.add_argument("-pl", "--patientList", help="Clini table containing PATIENT and FILENAME to normalise", type=Path)
     parser.add_argument("-si", "--sampleImagePath", help="Image used to determine the colour distribution, uses GitHub one by default", type=Path)
     parser.add_argument("-nt", "--threads", help="Number of threads used for processing, 2 by default", type=int)
     args = parser.parse_args()
@@ -111,4 +136,5 @@ if __name__ == '__main__':
     Normalization(  args.inputPath,
                     args.outputPath, 
                     args.sampleImagePath if args.sampleImagePath != None else 'normalization_template.jpg', 
-                    args.threads if args.threads != None else 2)
+                    args.threads if args.threads != None else 2,
+                    args.patientList)
