@@ -198,7 +198,8 @@ def get_concentrations(I, stain_matrix, lamda=0.01):
     """
     OD = RGB_to_OD(I).reshape((-1, 3))
     try:
-        temp = spams.lasso(OD.T, D=stain_matrix.T, mode=2, lambda1=lamda, pos=True).toarray().T
+        #limit Lasso threads to 1 to avoid thread inception (default is -1, takes all cores)
+        temp = spams.lasso(OD.T, D=stain_matrix.T, mode=2, lambda1=lamda, pos=True, numThreads=1).toarray().T
     except:
        temp = 0
     return temp
